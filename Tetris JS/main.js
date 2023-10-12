@@ -10,6 +10,15 @@ const ctx = canvas.getContext("2d")
 ctx.canvas.width = BOARD_WIDTH
 ctx.canvas.height = BOARD_HEIGHT
 
+const piece = {
+  x: 5,
+  y: 5,
+  shape: [
+    [1, 1],
+    [1, 1]
+  ]
+}
+
 const BOARD = [
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
@@ -30,22 +39,57 @@ const BOARD = [
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
+  [1,1,1,1,1,1,0,0,1,1],
 ]
+
+function loop() {
+  window.requestAnimationFrame(draw)
+
+  document.addEventListener('keydown', (event) => {
+
+    switch (event.key) {
+      case 'ArrowLeft':
+        piece.x--
+        break
+      case 'ArrowRight':
+        piece.x++
+        break
+      case 'ArrowDown':
+        piece.y++
+        break
+    }
+
+  })
+}
 
 function draw() {
   ctx.fillStyle = '#FFF'
   ctx.fillRect(0, 0, BOARD_WIDTH, BOARD_HEIGHT)
 
-  ctx.fillStyle = '#000'
-
   BOARD.forEach((row, y) => {
     row.forEach((value, x) => {
       if (value == 1) {
-        ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
+        paintBlock(x, y, '#000')
       }
+    })
+  })
+
+  paintCurrentPiece()
+
+  window.requestAnimationFrame(draw)
+}
+
+function paintCurrentPiece() {
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      paintBlock(x + piece.x, y + piece.y, 'red')
     })
   })
 }
 
-draw()
+function paintBlock(x, y, color) {
+  ctx.fillStyle = color
+  ctx.fillRect(x * BLOCK_SIZE, y * BLOCK_SIZE, BLOCK_SIZE, BLOCK_SIZE)
+}
+
+loop()
