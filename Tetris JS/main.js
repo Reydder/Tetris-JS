@@ -65,6 +65,13 @@ function loop() {
       case 'ArrowDown':
         pieceFallDown()
         break
+      case "ArrowUp":
+        const oldShape = piece.shape.slice()
+        rotatePiece()
+        if (isGoingToCollide()) {
+          piece.shape = oldShape
+        }
+        break
     }
   })
 }
@@ -109,8 +116,8 @@ function isGoingToCollide() {
     row.forEach((value, x) => {
       const xBoardCoordinate = x + piece.x
       const yBoardCoordinate = y + piece.y
-      
-      if (value = 1) {
+
+      if (value == 1) {
         if (BOARD[yBoardCoordinate] == undefined ||
             BOARD[yBoardCoordinate][xBoardCoordinate] == undefined ||
             BOARD[yBoardCoordinate][xBoardCoordinate] == 1) {
@@ -143,7 +150,6 @@ function solidifyCurrentPiece() {
       
       if (value == 1) {
         BOARD[yBoardCoordinate][xBoardCoordinate] = 1
-        console.log("Block painted")
       }
     })
   })
@@ -182,6 +188,22 @@ function pieceFallDown() {
     rempoveCompletedLines()
     spawnPiece()
   }
+}
+
+function rotatePiece() {
+  var newShape = []
+
+  for (var x = 0; x <= piece.shape[0].length - 1; x++) {
+    var newShapeRow = []
+
+    for (var y = piece.shape.length - 1; y >= 0; y--) {
+      newShapeRow.push(piece.shape[y][x])
+    }
+   
+    newShape.push(newShapeRow)
+  }
+  
+  piece.shape = newShape
 }
 
 loop()
