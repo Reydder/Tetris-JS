@@ -64,6 +64,7 @@ function loop() {
         if (isGoingToCollide()) {
           piece.y--
           solidifyCurrentPiece()
+          rempoveCompletedLines()
           spawnPiece()
         }
         break
@@ -143,6 +144,20 @@ function solidifyCurrentPiece() {
         BOARD[yBoardCoordinate][xBoardCoordinate] = 1
       }
     })
+  })
+}
+
+function rempoveCompletedLines() {
+  var linesToRemove = []
+  BOARD.forEach((row, y) => {
+    if (!row.includes(0)) {
+      linesToRemove.push(y)
+    }
+  })
+
+  linesToRemove.forEach((value, _) => {
+    BOARD.splice(value, 1)
+    BOARD.splice(0,0,[0,0,0,0,0,0,0,0,0,0])
   })
 }
 
