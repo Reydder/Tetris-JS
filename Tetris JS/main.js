@@ -34,13 +34,15 @@ const BOARD = [
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,1,1,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
-  [1,1,1,1,1,1,0,0,1,1],
+  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,0,0,0,0],
 ]
+
+var timeFromLastUpdate = Date.now()
 
 function loop() {
   window.requestAnimationFrame(draw)
@@ -60,13 +62,7 @@ function loop() {
         }
         break
       case 'ArrowDown':
-        piece.y++
-        if (isGoingToCollide()) {
-          piece.y--
-          solidifyCurrentPiece()
-          rempoveCompletedLines()
-          spawnPiece()
-        }
+        pieceFallDown()
         break
     }
   })
@@ -84,6 +80,7 @@ function draw() {
     })
   })
 
+  autoFallDown()
   paintCurrentPiece()
 
   window.requestAnimationFrame(draw)
@@ -159,6 +156,27 @@ function rempoveCompletedLines() {
     BOARD.splice(value, 1)
     BOARD.splice(0,0,[0,0,0,0,0,0,0,0,0,0])
   })
+}
+
+function autoFallDown() {
+  var updatedTime = Date.now()
+
+  const timeElapsed = updatedTime - timeFromLastUpdate
+
+  if (timeElapsed >= 1000) {
+    pieceFallDown()
+    timeFromLastUpdate = updatedTime
+  }
+}
+
+function pieceFallDown() {
+  piece.y++
+  if (isGoingToCollide()) {
+    piece.y--
+    solidifyCurrentPiece()
+    rempoveCompletedLines()
+    spawnPiece()
+  }
 }
 
 loop()
