@@ -1,4 +1,5 @@
 import './style.css'
+import { allShapes }  from './shapes'
 
 const BLOCK_SIZE = 20
 const BOARD_WIDTH = BLOCK_SIZE * 10
@@ -13,12 +14,9 @@ ctx.canvas.height = BOARD_HEIGHT
 var piece = {
   x: 4,
   y: 0,
-  shape: [
-    [0, 1],
-    [0, 1],
-    [1, 1]
-  ]
+  shape: []
 }
+spawnPiece()
 
 const BOARD = [
   [0,0,0,0,0,0,0,0,0,0],
@@ -131,14 +129,11 @@ function isGoingToCollide() {
 }
 
 function spawnPiece() {
+  const shape = allShapes[(Math.floor(Math.random() * (allShapes.length)))]
   piece = {
     x: 4,
     y: 0,
-    shape: [
-      [0, 1],
-      [0, 1],
-      [1, 1]
-    ]
+    shape: shape
   }
 }
 
