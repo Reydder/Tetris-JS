@@ -14,7 +14,8 @@ var piece = {
   x: 4,
   y: 0,
   shape: [
-    [1, 1],
+    [0, 1],
+    [0, 1],
     [1, 1]
   ]
 }
@@ -89,7 +90,9 @@ function draw() {
 function paintCurrentPiece() {
   piece.shape.forEach((row, y) => {
     row.forEach((value, x) => {
-      paintBlock(x + piece.x, y + piece.y, 'red')
+      if (value == 1) {
+        paintBlock(x + piece.x, y + piece.y, 'red')
+      }
     })
   })
 }
@@ -125,7 +128,8 @@ function spawnPiece() {
     x: 4,
     y: 0,
     shape: [
-      [1, 1],
+      [0, 1],
+      [0, 1],
       [1, 1]
     ]
   }
@@ -137,8 +141,9 @@ function solidifyCurrentPiece() {
       const xBoardCoordinate = x + piece.x
       const yBoardCoordinate = y + piece.y
       
-      if (value = 1) {
+      if (value == 1) {
         BOARD[yBoardCoordinate][xBoardCoordinate] = 1
+        console.log("Block painted")
       }
     })
   })
