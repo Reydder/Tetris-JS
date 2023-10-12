@@ -10,7 +10,7 @@ const ctx = canvas.getContext("2d")
 ctx.canvas.width = BOARD_WIDTH
 ctx.canvas.height = BOARD_HEIGHT
 
-const piece = {
+var piece = {
   x: 4,
   y: 0,
   shape: [
@@ -34,7 +34,7 @@ const BOARD = [
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
-  [0,0,0,0,0,0,0,0,0,0],
+  [0,0,0,0,0,0,1,1,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
   [0,0,0,0,0,0,0,0,0,0],
@@ -63,6 +63,8 @@ function loop() {
         piece.y++
         if (isGoingToCollide()) {
           piece.y--
+          solidifyCurrentPiece()
+          spawnPiece()
         }
         break
     }
@@ -118,6 +120,30 @@ function isGoingToCollide() {
   })
 
   return goingToCollide
+}
+
+function spawnPiece() {
+  piece = {
+    x: 4,
+    y: 0,
+    shape: [
+      [1, 1],
+      [1, 1]
+    ]
+  }
+}
+
+function solidifyCurrentPiece() {
+  piece.shape.forEach((row, y) => {
+    row.forEach((value, x) => {
+      const xBoardCoordinate = x + piece.x
+      const yBoardCoordinate = y + piece.y
+      
+      if (value = 1) {
+        BOARD[yBoardCoordinate][xBoardCoordinate] = 1
+      }
+    })
+  })
 }
 
 loop()
